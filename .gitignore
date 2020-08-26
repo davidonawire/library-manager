@@ -41,6 +41,10 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Mac crud
+.DS_Store
+public/.DS_Store
+
 # TypeScript v1 declaration files
 typings/
 
