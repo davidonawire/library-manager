@@ -15,14 +15,13 @@ function asyncHandler(cb){
 
 // GET books listing
 router.get('/', asyncHandler(async (req, res) => {
-  const books = await Book.FindAll();
-  console.log(books.map(book => book.toJSON()));
+  const books = await Book.findAll();
   res.render('index', { books, title: 'Books' });
 }));
 
 // GET create new book form
 router.get('/new', asyncHandler(async (req, res) => {
-
+  res.render('new', { book: {}, title: 'New Book' });
 }));
 
 // POST new book
@@ -32,7 +31,12 @@ router.post('/new', asyncHandler(async (req, res) => {
 
 // GET book detail page
 router.get('/:id', asyncHandler(async (req, res) => {
-
+  const book = await Book.findByPk(req.params.id);
+  if (book) {
+    res.render('edit', { book, title: book.title });
+  } else {
+    res.sendStatus(404);
+  }
 }));
 
 // POST book update
