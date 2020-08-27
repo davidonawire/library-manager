@@ -22,3 +22,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/books', books);
+
+sequelize.sync()
+  .then(() => {
+    console.log('Connected to the DB');
+    app.listen('5000', () => {
+      console.log('Connected on Port 5000');
+    });
+  })
+  .catch((err) => console.error('Error on start-up:', err));
