@@ -1,0 +1,28 @@
+{
+  "name": "library-manager",
+  "version": "1.0.0",
+  "description": "A demonstration CRUD app using Express, Node, Pug, Sequelize, and SQLite",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidonawire/library-manager.git"
+  },
+  "author": "David Adams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidonawire/library-manager/issues"
+  },
+  "homepage": "https://github.com/davidonawire/library-manager#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^3.0.0",
+    "sequelize": "^6.3.4",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.2.0"
+  }
+}
