@@ -26,7 +26,8 @@ router.get('/new', asyncHandler(async (req, res) => {
 
 // POST new book
 router.post('/new', asyncHandler(async (req, res) => {
-
+  book = await Book.create(req.body);
+  res.redirect("/books");
 }));
 
 // GET book detail page
@@ -41,10 +42,24 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST book update
 router.post('/:id', asyncHandler(async (req, res) => {
-
+  const book = await Book.findByPk(req.params.id);
+  if (book) {
+    await book.update(req.body);
+    res.redirect("/books");
+  } else {
+    res.sendStatus(404);
+  }
 }));
 
 // DELETE a book
-
+router.post('/:id/delete', asyncHandler(async (req, res) => {
+  const book = await Book.findByPk(req.params.id);
+  if (book) {
+    await book.destroy();
+    res.redirect("/articles");
+  } else {
+    res.sendStatus(404);
+  }
+}));
 
 module.exports = router;
