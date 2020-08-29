@@ -44,6 +44,7 @@ app.use((err, req, res, next) => {
   }
 });
 
+// Initialize our database connection and start the server
 sequelize.sync()
   .then(() => {
     console.log('Database connection successful');

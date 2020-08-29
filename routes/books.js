@@ -31,6 +31,7 @@ router.post('/new', asyncHandler(async (req, res) => {
     book = await Book.create(req.body);
     res.redirect("/books");
   } catch (error) {
+    // Check for required field errors
     if (error.name === 'SequelizeValidationError') {
       book = await Book.build(req.body);
       res.render('new', { book, errors: error.errors, title: 'New Book' });
@@ -66,6 +67,7 @@ router.post('/:id', asyncHandler(async (req, res, next) => {
       next(error);
     }
   } catch (error) {
+    // Check for required field errors
     if (error.name === 'SequelizeValidationError') {
       book = await Book.build(req.body);
       res.render('edit', { book, errors: error.errors, title: book.title });
