@@ -29,13 +29,13 @@ app.use('/books', books);
 
 // Handle 404 errors
 app.use((req, res, next) => {
-  res.status(404).render('pagenotfound', { title: 'Page Not Found'});
+  res.status(404).render('page-not-found', { title: 'Page Not Found'});
 });
 
 // General error handler
 app.use((err, req, res, next) => {
   if (err.status === 404) {
-    res.render('pagenotfound', { title: 'Page Not Found'});
+    res.render('page-not-found', { title: 'Page Not Found'});
   } else {
     err.message = 'Something went wrong!';
     res.status(err.status);
