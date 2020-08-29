@@ -31,34 +31,40 @@ router.post('/new', asyncHandler(async (req, res) => {
 }));
 
 // GET book detail page
-router.get('/:id', asyncHandler(async (req, res) => {
+router.get('/:id', asyncHandler(async (req, res, next) => {
   const book = await Book.findByPk(req.params.id);
   if (book) {
     res.render('edit', { book, title: book.title });
   } else {
-    res.sendStatus(404);
+    const error = new Error("Record not found");
+    error.status = 500;
+    next(error);
   }
 }));
 
 // POST book update
-router.post('/:id', asyncHandler(async (req, res) => {
+router.post('/:id', asyncHandler(async (req, res, next) => {
   const book = await Book.findByPk(req.params.id);
   if (book) {
     await book.update(req.body);
     res.redirect("/books");
   } else {
-    res.sendStatus(404);
+    const error = new Error("Record not found");
+    error.status = 500;
+    next(error);
   }
 }));
 
 // DELETE a book
-router.post('/:id/delete', asyncHandler(async (req, res) => {
+router.post('/:id/delete', asyncHandler(async (req, res, next) => {
   const book = await Book.findByPk(req.params.id);
   if (book) {
     await book.destroy();
-    res.redirect("/articles");
+    res.redirect("/books");
   } else {
-    res.sendStatus(404);
+    const error = new Error("Record not found");
+    error.status = 500;
+    next(error);
   }
 }));
 

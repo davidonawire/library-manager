@@ -29,19 +29,19 @@ app.use('/books', books);
 
 // Handle 404 errors
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  res.status(404).render('pagenotfound', { title: 'Page Not Found'});
 });
 
 // General error handler
 app.use((err, req, res, next) => {
-  if (err.status !== 404) {
+  if (err.status === 404) {
+    res.render('pagenotfound', { title: 'Page Not Found'});
+  } else {
     err.message = 'Something went wrong!';
+    res.status(err.status);
+    console.log(`${err.message} (Status Code: ${err.status})`);
+    res.render('error', { title: 'Something Went Wrong' });
   }
-  res.status(err.status);
-  console.log(`${err.message} (Status Code: ${err.status})`);
-  // res.render('error', { error: err });
 });
 
 sequelize.sync()
