@@ -26,8 +26,18 @@ router.get('/new', asyncHandler(async (req, res) => {
 
 // POST new book
 router.post('/new', asyncHandler(async (req, res) => {
-  book = await Book.create(req.body);
-  res.redirect("/books");
+  let book;
+  try {
+    book = await Book.create(req.body);
+    res.redirect("/books");
+  } catch (error) {
+    if (error.name === 'SequelizeValidationError') {
+      book = await Book.build(req.body);
+      res.render('new', { book, errors: error.errors, title: 'New Book' });
+    } else {
+      throw error;
+    }
+  }
 }));
 
 // GET book detail page
@@ -44,15 +54,26 @@ router.get('/:id', asyncHandler(async (req, res, next) => {
 
 // POST book update
 router.post('/:id', asyncHandler(async (req, res, next) => {
-  const book = await Book.findByPk(req.params.id);
-  if (book) {
-    await book.update(req.body);
-    res.redirect("/books");
-  } else {
-    const error = new Error("Record not found");
-    error.status = 500;
-    next(error);
+  let book;
+  try {
+    book = await Book.findByPk(req.params.id);
+    if (book) {
+      await book.update(req.body);
+      res.redirect("/books");
+    } else {
+      const error = new Error("Record not found");
+      error.status = 500;
+      next(error);
+    }
+  } catch (error) {
+    if (error.name === 'SequelizeValidationError') {
+      book = await Book.build(req.body);
+      res.render('edit', { book, errors: error.errors, title: book.title });
+    } else {
+      throw error;
+    }
   }
+  
 }));
 
 // DELETE a book
